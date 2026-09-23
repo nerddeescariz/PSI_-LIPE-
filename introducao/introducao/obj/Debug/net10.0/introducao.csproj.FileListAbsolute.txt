@@ -1,0 +1,15 @@
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\bin\Debug\net10.0\introducao.exe
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\bin\Debug\net10.0\introducao.deps.json
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\bin\Debug\net10.0\introducao.runtimeconfig.json
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\bin\Debug\net10.0\introducao.dll
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\bin\Debug\net10.0\introducao.pdb
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.AssemblyInfoInputs.cache
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.AssemblyInfo.cs
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.csproj.CoreCompileInputs.cache
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.sourcelink.json
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.dll
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\refint\introducao.dll
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.pdb
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\introducao.genruntimeconfig.cache
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\introducao\introducao\obj\Debug\net10.0\ref\introducao.dll

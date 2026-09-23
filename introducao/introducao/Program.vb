@@ -1,7 +1,11 @@
-Imports System
-
-Module Program
-    Sub Main(args As String())
-        Console.WriteLine("Hello World!")
-    End Sub
-End Module
+Using System;
+Class Program
+      {
+    Static void Main(String[] args)
+            {
+        Console.WriteLine("5+3");
+         Console.WriteLine(5+3);
+         String mensagemdeboasvindas = "Ola bem vindo!";
+         Console.WriteLine(mensagemdeboasvindas);
+         }
+         }
