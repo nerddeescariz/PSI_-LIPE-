@@ -1,0 +1,16 @@
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\bin\Debug\net10.0\Introducao 3.exe
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\bin\Debug\net10.0\Introducao 3.deps.json
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\bin\Debug\net10.0\Introducao 3.runtimeconfig.json
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\bin\Debug\net10.0\Introducao 3.dll
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\bin\Debug\net10.0\Introducao 3.pdb
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.AssemblyInfoInputs.cache
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.AssemblyInfo.cs
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.csproj.CoreCompileInputs.cache
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.sourcelink.json
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.dll
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\refint\Introducao 3.dll
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.pdb
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introducao 3.genruntimeconfig.cache
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\ref\Introducao 3.dll
+C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\Introducao 3\Introducao 3\obj\Debug\net10.0\Introduc.4AFF002C.Up2Date

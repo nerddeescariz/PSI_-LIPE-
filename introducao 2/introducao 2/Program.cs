@@ -1,18 +1,10 @@
-﻿﻿using System; //livraria nativa do c#, com todas as classes e métodos que vamos usar
+﻿using System; //livraria nativa do c#, com todas as classes e métodos que vamos usar
 
 class Program //classe deste script
 {
     static void Main(string[] args) //permite o código correr
     {
-        //Console.WriteLine("5+3"); //a imprimir uma string
-        //Console.WriteLine(5+3); //a imprimir um int
-        //string mensagemBoasVindas = "Olá, bem vindo,";
-        //Console.WriteLine(mensagemBoasVindas);
-        //string nome = "Marta";
-        //Console.WriteLine(mensagemBoasVindas+" "+nome+".");
-        //Console.WriteLine("Olá "+nomeUtilizador+" tens " + idadeUtilizador+" anos.");
-        //Console.WriteLine("Olá {0} tens {1} anos.",nomeUtilizador,idadeUtilizador);
-
+    
         Console.Write("Nome: ");
         string nomeUtilizador = Console.ReadLine();
         Console.Write("Idade: ");
