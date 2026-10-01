@@ -8,9 +8,9 @@ class Program
     public static List<Livro> livros = new List<Livro>();
     public static List<Utilizador> utilizadores = new List<Utilizador>();
     public const string ficheiroLivros = "livros.txt";
+    public const string ficheiroUtilizadores = "utilizadores.txt";
 
     // ---------------------- Métodos ----------------------
-
     static void Main(string[] args)
     {
 
@@ -33,8 +33,9 @@ class Program
             Console.WriteLine("====== Utilizadores ======");
             Console.WriteLine("7. Adicionar utilizador");
             Console.WriteLine("8. Pesquisar utilizador"); //fazer mais tarde
-            Console.WriteLine("9. Remover utilizador"); //fazer mais tarde
-            //listar utilizador
+            Console.WriteLine("9. Remover utilizador"); 
+            Console.WriteLine("10. Listar Utilizadores"); 
+            Console.WriteLine("11. Carregar Utilizadores");
             Console.WriteLine("====== Outros ======");
             Console.WriteLine("0. Sair\n");
             Console.Write("Selecione uma opção: ");
@@ -74,9 +75,19 @@ class Program
                     break;
                 case 8:
                     // Pesquisar utilizador
+                    ListarUtilizador();
                     break;
                 case 9:
                     // Remover utilizador
+                    RemoverUtilizador();
+                    break;
+                case 10:
+                    // Listar utilizadores 
+                    ListarUtilizadores();
+                    break;
+                case 11:
+                    // Carregar utilizadores
+                    CarregarUtilizadores();
                     break;
                 case 0:
                     // Sair
@@ -97,7 +108,7 @@ class Program
     {
         if (!File.Exists(ficheiroLivros))
         {
-            //TO DO
+            File.Create(ficheiroLivros);
         }
 
         //array de strings em que cada elemento corresponde a uma linha
@@ -225,6 +236,11 @@ class Program
         //to-do
     }
 
+    // ----------------- 5. Devolver livro -----------------
+    private static void DevolverLivro()
+    {
+        //to-do
+    }   
     // ----------------- 6. Remover livro -----------------
 
     private static void RemoverLivro()
@@ -289,15 +305,56 @@ class Program
         }
         else
         {
-            //queremos o numero de cartao do ultimo utilizador adicionado
-            //ultimo utilizador adicionado: utilizadores[utilizadores.Count() - 1]
-            /*
-            Utilizador ultimoUtilizador = utilizadores[utilizadores.Count() - 1];
-            string numeroUltimoUtilizador = ultimoUtilizador.NumeroCartaoBiblioteca;
-            */
+            
             string numeroUltimoUtilizador = utilizadores[utilizadores.Count() - 1].NumeroCartaoBiblioteca;
             return (int.Parse(numeroUltimoUtilizador)+1).ToString("D9");
         }
     }
+    // ----------------- 8. Listar utilizador -----------------
+ private static void ListarUtilizador()
+    {
+       Console.WriteLine("\n====== 8. Listar Utilizadores ======");
 
+        if (utilizadores.Count == 0)
+        {
+            Console.WriteLine("\nNão existem utilizadores cadastrados.");
+        }
+        else
+        {
+            foreach (Utilizador utilizador in utilizadores)
+            {
+                UtilizadorInfo(utilizador);
+            }
+        }
+
+    }
+
+    public static void UtilizadorInfo(Utilizador utilizador)
+    {
+        Console.WriteLine($"\n====== {utilizador.Nome} ======");
+        Console.WriteLine("Número do Cartão: " + utilizador.NumeroCartaoBiblioteca);
+    }
+    // ----------------- 9. Carregar Utilizadores -----------------
+    private static void CarregarUtilizadores()
+    {
+        if (!File.Exists(ficheiroUtilizadores))
+        {
+            File.Create(ficheiroUtilizadores);
+        }
+
+        //array de strings em que cada elemento corresponde a uma linha
+        //do ficheiro, isto é, a um utilizador
+        string[] linhas = File.ReadAllLines(ficheiroUtilizadores);
+        foreach (string linha in linhas)
+        {
+            //João Silva|000000001
+            string[] dados = linha.Split('|');
+            Utilizador utilizadorNovo = new Utilizador
+            {
+                Nome = dados[0],
+                NumeroCartaoBiblioteca = dados[1]
+            };
+            utilizadores.Add(utilizadorNovo);
+        }
+    }
 }
