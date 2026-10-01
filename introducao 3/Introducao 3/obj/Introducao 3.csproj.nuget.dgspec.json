@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao 3\\Introducao 3\\Introducao 3.csproj": {}
+    "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\introducao 3\\Introducao 3\\Introducao 3.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao 3\\Introducao 3\\Introducao 3.csproj": {
+    "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\introducao 3\\Introducao 3\\Introducao 3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao 3\\Introducao 3\\Introducao 3.csproj",
+        "projectUniqueName": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\introducao 3\\Introducao 3\\Introducao 3.csproj",
         "projectName": "Introducao 3",
-        "projectPath": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao 3\\Introducao 3\\Introducao 3.csproj",
+        "projectPath": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\introducao 3\\Introducao 3\\Introducao 3.csproj",
         "packagesPath": "C:\\Users\\Aluno\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao 3\\Introducao 3\\obj\\",
+        "outputPath": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\introducao 3\\Introducao 3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Aluno\\AppData\\Roaming\\NuGet\\NuGet.Config",
