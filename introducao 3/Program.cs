@@ -256,6 +256,8 @@ class Program
         Console.WriteLine("\n====== 4. Requisitar Livro ======\n");
         Console.Write("Insira o ISBN do livro que deseja requisitar: ");
         string isbnRequisitar = Console.ReadLine();
+        Console.Write("Insira o número do cartão da biblioteca do utilizador: ");
+        string numeroCartao = Console.ReadLine();
         foreach (Livro livro in livros)
         {
             if (isbnRequisitar.Equals(livro.ISBN, StringComparison.OrdinalIgnoreCase))
@@ -295,11 +297,11 @@ class Program
                     livro.Disponivel = true;
                     Console.WriteLine($"\nO livro {livro.Título} foi devolvido com sucesso.");
                 }
+                if (!livro.Disponivel)
+                {
+                    Console.WriteLine($"\nO livro {livro.Título} não está disponível para devolução.");
+                }
                 return;
-            }
-              if (!isbnDevolver.Equals(livro.ISBN, StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine("\nNão existe nenhum livro com o ISBN indicado.");
             }
         }
     }
