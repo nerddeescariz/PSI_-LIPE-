@@ -1,6 +1,0 @@
-teste|aura|13523|1999|masculino |True
-ufa|ios|das|1999|da|True
-da|da|da|1934|dg|True
-ad|ad|def|1999|def|True
-Paulao|pdf|heitor|1945|terror|True
-paulao|paula|heitor|1945|terror|True
