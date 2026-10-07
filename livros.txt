@@ -1,0 +1,3 @@
+teste|aura|13523|1999|masculino |True
+ufa|ios|das|1999|da|True
+da|da|da|1934|dg|True

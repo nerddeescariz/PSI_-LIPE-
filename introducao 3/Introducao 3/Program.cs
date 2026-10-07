@@ -1,5 +1,23 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+
+class Livro
+{
+    public string Título { get; set; }
+    public string Autor { get; set; }
+    public string ISBN { get; set; }
+    public int AnoPublicacao { get; set; }
+    public string Genero { get; set; }
+    public bool Disponivel { get; set; }
+}
+
+class Utilizador
+{
+    public string NumeroCartaoBiblioteca { get; set; }
+    public string Nome { get; set; }
+}
 
 class Program
 {
@@ -8,12 +26,15 @@ class Program
     public static List<Livro> livros = new List<Livro>();
     public static List<Utilizador> utilizadores = new List<Utilizador>();
     public const string ficheiroLivros = "livros.txt";
+    public const string ficheiroUtilizadores = "utilizadores.txt";
 
     // ---------------------- Métodos ----------------------
+
     static void Main(string[] args)
     {
 
         CarregarLivros();
+        CarregarUtilizadores();
 
         int opcao;
 
@@ -27,19 +48,22 @@ class Program
             Console.WriteLine("1. Listar livros");
             Console.WriteLine("2. Pesquisar livro");
             Console.WriteLine("3. Adicionar livro");
-            Console.WriteLine("4. Requisitar livro");
-            Console.WriteLine("5. Devolver livro");
+            Console.WriteLine("4. Requisitar livro"); //to-do
+            Console.WriteLine("5. Devolver livro"); //to-do
             Console.WriteLine("6. Remover livro");
             Console.WriteLine("====== Utilizadores ======");
             Console.WriteLine("7. Adicionar utilizador");
-            Console.WriteLine("8. Pesquisar utilizador"); //fazer mais tarde
-            Console.WriteLine("9. Remover utilizador");
-            Console.WriteLine("8. Listar Utilizadores");
+            Console.WriteLine("8. Pesquisar utilizador"); //to-do
+            Console.WriteLine("9. Remover utilizador"); //to-do
+            Console.WriteLine("10. Listar utilizador"); //to-do
             Console.WriteLine("====== Outros ======");
             Console.WriteLine("0. Sair\n");
             Console.Write("Selecione uma opção: ");
 
-            opcao = int.Parse(Console.ReadLine());
+            if (!int.TryParse(Console.ReadLine(), out opcao))
+            {
+                opcao = -1; // cai no default: "A opção não existe."
+            }
 
             // ---------------------- Opções ----------------------
 
@@ -62,7 +86,8 @@ class Program
                     RequisitarLivro();
                     break;
                 case 5:
-                    // Devolver livro
+                    // Devolver livro - to-do
+                    DevolverLivro();
                     break;
                 case 6:
                     // Remover livro
@@ -73,10 +98,16 @@ class Program
                     AdicionarUtilizador();
                     break;
                 case 8:
-                    // Pesquisar utilizador
+                    // Pesquisar utilizador - to-do
+                    PesquisarUtilizador();
                     break;
                 case 9:
-                    // Remover utilizador
+                    // Remover utilizador - to-do
+                    RemoverUtilizador();
+                    break;
+                case 10:
+                    // Listar utilizador - to-do
+                    ListarUtilizador();
                     break;
                 case 0:
                     // Sair
@@ -90,6 +121,10 @@ class Program
         } while (opcao != 0);
     }
 
+    // --------------------------------------------------
+    // --------------------- Livros ---------------------
+    // --------------------------------------------------
+
     //Exemplo de Ficheiro livros.txt :
     //Harry Potter|J.K. Rowling|9781234567890|1997|Fantasia|True
     //1984|George Orwell|9789876543210|1949|Distopia|True
@@ -97,18 +132,14 @@ class Program
     {
         if (!File.Exists(ficheiroLivros))
         {
-            //TO DO
+            File.Create(ficheiroLivros).Close();
         }
 
-        //array de strings em que cada elemento corresponde a uma linha
-        //do ficheiro, isto é, a um livro
         string[] linhas = File.ReadAllLines(ficheiroLivros);
         foreach (string linha in linhas)
         {
-            //Harry Potter|J.K. Rowling|9781234567890|1997|Fantasia|True
-            //Harry Potter
-            //J.K. Rowling
-            //...
+            if (string.IsNullOrWhiteSpace(linha)) continue;
+
             string[] dados = linha.Split('|');
             Livro livroNovo = new Livro
             {
@@ -214,6 +245,7 @@ class Program
             Disponivel = true
         };
 
+        File.AppendAllText(ficheiroLivros, livroNovo.Título + "|" + livroNovo.Autor + "|" + livroNovo.ISBN + "|" + livroNovo.AnoPublicacao + "|" + livroNovo.Genero + "|" + livroNovo.Disponivel + Environment.NewLine);
         livros.Add(livroNovo);
 
     }
@@ -222,14 +254,53 @@ class Program
 
     private static void RequisitarLivro()
     {
-        //to-do
+        Console.WriteLine("\n====== 4. Requisitar Livro ======\n");
+        Console.Write("Insira o ISBN do livro que deseja requisitar: ");
+        string isbnRequisitar = Console.ReadLine();
+        foreach (Livro livro in livros)
+        {
+            if (isbnRequisitar.Equals(livro.ISBN, StringComparison.OrdinalIgnoreCase))
+            {
+                if (livro.Disponivel)
+                {
+                    livro.Disponivel = false;
+                    Console.WriteLine($"\nO livro {livro.Título} foi requisitado com sucesso.");
+                }
+                else
+                {
+                    Console.WriteLine($"\nO livro {livro.Título} não está disponível para requisição.");
+                }
+                return;
+            }
+        }
     }
 
     // ----------------- 5. Devolver livro -----------------
+
     private static void DevolverLivro()
     {
-        //to-do
+        Console.WriteLine("\n====== 5. Devolver Livro ======\n");
+        Console.Write("Insira o ISBN do livro que deseja devolver: ");
+        string isbnDevolver = Console.ReadLine();
+        foreach (Livro livro in livros)
+        {
+            if (isbnDevolver.Equals(livro.ISBN, StringComparison.OrdinalIgnoreCase))
+            {
+                if (!livro.Disponivel)
+                {
+                    livro.Disponivel = true;
+                    Console.WriteLine($"\nO livro {livro.Título} foi devolvido com sucesso.");
+                }
+                else
+                {
+                    Console.WriteLine($"\nO livro {livro.Título} já está disponível na biblioteca.");
+                }
+                return;
+            }
+        }
     }
+
+
     // ----------------- 6. Remover livro -----------------
 
     private static void RemoverLivro()
@@ -240,12 +311,14 @@ class Program
         string isbnRemover = Console.ReadLine();
 
         Livro livroEncontrado = null;
+        int indiceLivro = -1;
 
-        foreach (Livro livro in livros)
+        for (int i = 0; i < livros.Count; i++)
         {
-            if (isbnRemover.Equals(livro.ISBN, StringComparison.OrdinalIgnoreCase))
+            if (isbnRemover.Equals(livros[i].ISBN, StringComparison.OrdinalIgnoreCase))
             {
-                livroEncontrado = livro;
+                livroEncontrado = livros[i];
+                indiceLivro = i;
                 break;
             }
         }
@@ -257,16 +330,45 @@ class Program
         else
         {
             Console.Write($"\nDeseja remover {livroEncontrado.Título}, de {livroEncontrado.Autor}? (s/n): ");
-            char resposta = char.Parse(Console.ReadLine());
-            if (resposta == 's')
+            if (Console.ReadLine()?.Trim().ToLower() == "s")
             {
                 livros.Remove(livroEncontrado);
+                string[] linhasLivros = File.ReadAllLines(ficheiroLivros);
+                List<string> novasLinhas = new List<string>(linhasLivros);
+                novasLinhas.RemoveAt(indiceLivro);
+                File.WriteAllLines(ficheiroLivros, novasLinhas);
                 Console.WriteLine($"\n{livroEncontrado.Título}, de {livroEncontrado.Autor} foi removido.");
             }
         }
     }
 
+    // --------------------------------------------------------
+    // --------------------- Utilizadores ---------------------
+    // --------------------------------------------------------
+
     // ----------------- 7. Adicionar utilizador -----------------
+
+    private static void CarregarUtilizadores()
+    {
+        if (!File.Exists(ficheiroUtilizadores))
+        {
+            File.Create(ficheiroUtilizadores).Close();
+        }
+
+        string[] linhas = File.ReadAllLines(ficheiroUtilizadores);
+        foreach (string linha in linhas)
+        {
+            if (string.IsNullOrWhiteSpace(linha)) continue;
+
+            string[] dados = linha.Split('|');
+            Utilizador utilizadorNovo = new Utilizador
+            {
+                NumeroCartaoBiblioteca = dados[0],
+                Nome = dados[1]
+            };
+            utilizadores.Add(utilizadorNovo);
+        }
+    }
 
     private static void AdicionarUtilizador()
     {
@@ -283,6 +385,7 @@ class Program
         };
 
         utilizadores.Add(novoUtilizador);
+        File.AppendAllText(ficheiroUtilizadores, novoUtilizador.NumeroCartaoBiblioteca + "|" + novoUtilizador.Nome + Environment.NewLine);
         Console.WriteLine("\nO utilizador foi adicionado.");
     }
 
@@ -294,18 +397,104 @@ class Program
         }
         else
         {
-
             string numeroUltimoUtilizador = utilizadores[utilizadores.Count() - 1].NumeroCartaoBiblioteca;
             return (int.Parse(numeroUltimoUtilizador) + 1).ToString("D9");
         }
     }
-    // ----------------- 8. Listar utilizador -----------------
-    private static void ListarUtilizador()
+
+    // ----------------- 8. Pesquisar utilizador -----------------
+
+    private static void PesquisarUtilizador()
     {
-        Console.WriteLine("\n Lista de utilizadores\n");
+        Console.WriteLine("\n====== 8. Pesquisar Utilizador ======\n");
+
+        Console.WriteLine("Qual é o nome do utilizador que quer pesquisar?\n");
+        string pesquisa = Console.ReadLine();
+
+        bool encontrado = false;
+
         foreach (Utilizador utilizador in utilizadores)
         {
-            Console.WriteLine($"Nome: {utilizador.Nome}, Número do Cartão: {utilizador.NumeroCartaoBiblioteca}");
+            if (utilizador.Nome.Contains(pesquisa, StringComparison.OrdinalIgnoreCase))
+            {
+                UtilizadorInfo(utilizador);
+                encontrado = true;
+            }
         }
+
+        if (!encontrado)
+        {
+            Console.WriteLine("\nNão foi encontrado nenhum utilizador com o nome indicado.");
+        }
+    }
+
+    public static void UtilizadorInfo(Utilizador utilizador)
+    {
+        Console.WriteLine("\n========================");
+        Console.WriteLine("Nome: " + utilizador.Nome);
+        Console.WriteLine("Número do Cartão da Biblioteca: " + utilizador.NumeroCartaoBiblioteca);
+        Console.WriteLine("\n========================");
+    }
+
+    // ----------------- 9. Remover utilizador -----------------
+
+    private static void RemoverUtilizador()
+    {
+        Console.WriteLine("\n====== 9. Remover Utilizador ======\n");
+
+        Console.Write("\nInsira o número do cartão da biblioteca do utilizador que deseja remover: ");
+        string numeroCartaoRemover = Console.ReadLine();
+
+        Utilizador utilizadorEncontrado = null;
+        int indiceUtilizador = -1;
+
+        for (int i = 0; i < utilizadores.Count; i++)
+        {
+            if (numeroCartaoRemover.Equals(utilizadores[i].NumeroCartaoBiblioteca, StringComparison.OrdinalIgnoreCase))
+            {
+                utilizadorEncontrado = utilizadores[i];
+                indiceUtilizador = i;
+                break;
+            }
+        }
+
+        if (utilizadorEncontrado == null)
+        {
+            Console.WriteLine("\nNão existe nenhum utilizador com o número do cartão indicado.");
+        }
+        else
+        {
+            Console.Write($"\nDeseja remover {utilizadorEncontrado.Nome}? (s/n): ");
+            if (Console.ReadLine()?.Trim().ToLower() == "s")
+            {
+                utilizadores.Remove(utilizadorEncontrado);
+                string[] linhasUtilizadores = File.ReadAllLines(ficheiroUtilizadores);
+                List<string> novasLinhas = new List<string>(linhasUtilizadores);
+                novasLinhas.RemoveAt(indiceUtilizador);
+                File.WriteAllLines(ficheiroUtilizadores, novasLinhas);
+                Console.WriteLine($"\n{utilizadorEncontrado.Nome} foi removido.");
+            }
+        }
+    }
+
+    // ----------------- 10. Listar utilizador -----------------
+
+    private static void ListarUtilizador()
+    {
+
+        Console.WriteLine("\n====== 10. Listar Utilizadores ======");
+
+        if (utilizadores.Count == 0)
+        {
+            Console.WriteLine("\nNão existem utilizadores registados.");
+        }
+        else
+        {
+            foreach (Utilizador utilizador in utilizadores)
+            {
+                UtilizadorInfo(utilizador);
+            }
+        }
+
     }
 }
