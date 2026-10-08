@@ -8,19 +8,19 @@
     "net10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\marta\\.nuget\\packages\\": {}
+    "C:\\Users\\Aluno\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\PSI_MartaRibeiro\\Introducao\\Introducao\\Introducao.csproj",
+      "projectUniqueName": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao\\Introducao\\Introducao.csproj",
       "projectName": "Introducao",
-      "projectPath": "C:\\Projects\\PSI_MartaRibeiro\\Introducao\\Introducao\\Introducao.csproj",
-      "packagesPath": "C:\\Users\\marta\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\PSI_MartaRibeiro\\Introducao\\Introducao\\obj\\",
+      "projectPath": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao\\Introducao\\Introducao.csproj",
+      "packagesPath": "C:\\Users\\Aluno\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Aluno\\Documents\\GitHub\\PSI_-LIPE-\\Introducao\\Introducao\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\marta\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Aluno\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
