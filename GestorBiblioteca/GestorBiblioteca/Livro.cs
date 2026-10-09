@@ -44,12 +44,11 @@ class Livro
     /// </summary>
     public bool Disponivel { get; set; }
 
-    public Utilizador UtilizadorRequisitado { get; set; }
-
+    public Utilizador Utilizador { get; set; }
     public Livro()
     {
         Disponivel = true;
-        UtilizadorRequisitado = null;
+        Utilizador = null;
     }
 
 }
