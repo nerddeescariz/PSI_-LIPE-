@@ -1,9 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 
 /// <summary>
+/// Classe principal da aplicação de gestão da biblioteca.
+/// 
+/// Esta classe contém:
+/// - o menu principal;
+/// - as listas de livros e utilizadores;
+/// - os métodos para gerir livros;
+/// - os métodos para gerir utilizadores;
+/// - os métodos para ler e escrever nos ficheiros.
 /// </summary>
 class Program
 {
@@ -24,12 +31,12 @@ class Program
     /// <summary>
     /// Nome do ficheiro onde são guardados os livros.
     /// </summary>
-    public const string ficheiroLivros = "livros.txt";
+    public const string ficheiroLivros = "livro.txt";
 
     /// <summary>
     /// Nome do ficheiro onde são guardados os utilizadores.
     /// </summary>
-    public const string ficheiroUtilizadores = "utilizadores.txt";
+    public const string ficheiroUtilizadores = "utilizador.txt";
 
     // ==========================================================
     // ========================= MAIN ===========================
@@ -57,7 +64,7 @@ class Program
         // Carregar os dados guardados nos ficheiros.
         CarregarLivros();
         CarregarUtilizadores();
-
+        
         int opcao;
 
         // O ciclo do...while permite apresentar o menu
@@ -70,32 +77,33 @@ class Program
             // ==================================================
 
             Console.WriteLine("\n====== Gestor de Biblioteca ======\n");
+            
             Console.WriteLine("====== Livros ======");
+            
             Console.WriteLine("1. Listar livros");
             Console.WriteLine("2. Pesquisar livro");
             Console.WriteLine("3. Adicionar livro");
-            Console.WriteLine("4. Requisitar livro");
-            Console.WriteLine("5. Devolver livro");
+            Console.WriteLine("4. Requisitar livro"); //to-do
+            Console.WriteLine("5. Devolver livro"); //to-do
             Console.WriteLine("6. Remover livro");
-            Console.WriteLine("7. Guardar Livros");
+            
             Console.WriteLine("====== Utilizadores ======");
-            Console.WriteLine("8. Guardar Utilizadores");
-            Console.WriteLine("9. Adicionar utilizador");
-            Console.WriteLine("10. Pesquisar utilizador");
-            Console.WriteLine("11. Remover utilizador");
-            Console.WriteLine("12. Listar utilizador");
+            
+            Console.WriteLine("7. Adicionar utilizador");
+            Console.WriteLine("8. Pesquisar utilizador");
+            Console.WriteLine("9. Remover utilizador");
+            Console.WriteLine("10. Listar utilizador");
+            
             Console.WriteLine("====== Outros ======");
+            
             Console.WriteLine("0. Sair\n");
-
+            
             Console.Write("Selecione uma opção: ");
 
             // Ler a opção escolhida pelo utilizador.
-            // int.TryParse evita que o programa falhe
-            // se for introduzido texto inválido.
-            if (!int.TryParse(Console.ReadLine(), out opcao))
-            {
-                opcao = -1;
-            }
+            // int.Parse converte o texto introduzido para
+            // um número inteiro.
+            opcao = int.Parse(Console.ReadLine());
 
             // ==================================================
             // ===================== OPÇÕES =====================
@@ -119,10 +127,12 @@ class Program
                     break;
                 case 4:
                     // Requisitar um livro.
+                    // Funcionalidade ainda por implementar.
                     RequisitarLivro();
                     break;
                 case 5:
                     // Devolver um livro.
+                    // Funcionalidade ainda por implementar.
                     DevolverLivro();
                     break;
                 case 6:
@@ -130,26 +140,18 @@ class Program
                     RemoverLivro();
                     break;
                 case 7:
-                    // Guardar livros.
-                    GuardarLivros();
-                    break;
-                case 8:
-                    // Guardar utilizadores.
-                    GuardarUtilizadores();
-                    break;
-                case 9:
                     // Adicionar um novo utilizador.
                     AdicionarUtilizador();
                     break;
-                case 10:
-                    // Pesquisar utilizador.
+                case 8:
+                    // Pesquisar um utilizador.
                     PesquisarUtilizador();
                     break;
-                case 11:
+                case 9:
                     // Remover um utilizador.
                     RemoverUtilizador();
                     break;
-                case 12:
+                case 10:
                     // Listar todos os utilizadores.
                     ListarUtilizador();
                     break;
@@ -167,12 +169,6 @@ class Program
         // O menu continua a ser apresentado enquanto
         // a opção escolhida for diferente de 0.
         } while (opcao != 0);
-    }
-
-    private static bool Confirmar()
-    {
-        string resposta = Console.ReadLine();
-        return resposta != null && resposta.Trim().ToLower() == "s";
     }
 
     // --------------------------------------------------
@@ -194,7 +190,8 @@ class Program
         if (!File.Exists(ficheiroLivros))
         {
             // Se não existir, criar o ficheiro.
-            File.Create(ficheiroLivros).Dispose();
+            using (File.Create(ficheiroLivros)) { }
+            return;
         }
 
         // Ler todas as linhas do ficheiro.
@@ -203,8 +200,6 @@ class Program
         // Percorrer todas as linhas.
         foreach (string linha in linhas)
         {
-            if (string.IsNullOrWhiteSpace(linha)) continue;
-
             // Separar os diferentes campos utilizando '|'.
             //
             // Exemplo:
@@ -235,6 +230,28 @@ class Program
                 // para um valor booleano.
                 Disponivel = bool.Parse(dados[5])
             };
+
+            // Recuperar o número do cartão do utilizador
+            string numeroCartao = dados.Length > 6
+            ? dados[6]
+            : "0";
+
+            // Se o livro estiver requisitado, procurar o utilizador.
+            if (numeroCartao != "0")
+            {
+                foreach (Utilizador utilizador in utilizadores)
+                {
+                    if (utilizador.NumeroCartaoBiblioteca == numeroCartao)
+                    {
+                        livroNovo.UtilizadorRequisitado = utilizador;
+
+                        // Associar o livro à lista do utilizador.
+                        utilizador.LivrosRequisitados.Add(livroNovo);
+
+                        break;
+                    }
+                }
+            }
 
             // Adicionar o livro à lista.
             livros.Add(livroNovo);
@@ -298,7 +315,7 @@ class Program
         }
         else
         {
-            Console.WriteLine("O livro não está disponível");
+            Console.WriteLine($"O livro está a ser requisitado por {livro.UtilizadorRequisitado.Nome}, com o número de cartão {livro.UtilizadorRequisitado.NumeroCartaoBiblioteca}.");
         }
 
         Console.WriteLine("=============================");
@@ -322,7 +339,7 @@ class Program
             "Qual é o título do livro que quer pesquisar?\n");
 
         // Ler o texto introduzido pelo utilizador.
-        string pesquisa = Console.ReadLine() ?? "";
+        string pesquisa = Console.ReadLine();
 
         // Variável utilizada para saber se foi encontrado
         // pelo menos um livro.
@@ -384,20 +401,10 @@ class Program
         Console.Write("ISBN: ");
         string isbn = Console.ReadLine();
 
-        if (livros.Any(l => l.ISBN.Equals(isbn, StringComparison.OrdinalIgnoreCase)))
-        {
-            Console.WriteLine("\nJá existe um livro com esse ISBN.");
-            return;
-        }
-
         Console.Write("Ano de Publicação: ");
 
         // Converter o ano introduzido para inteiro.
-        if (!int.TryParse(Console.ReadLine(), out int anoPublicacao))
-        {
-            Console.WriteLine("\nAno de publicação inválido.");
-            return;
-        }
+        int anoPublicacao = int.Parse(Console.ReadLine());
 
         Console.Write("Género: ");
         string genero = Console.ReadLine();
@@ -413,17 +420,60 @@ class Program
             Genero = genero,
 
             // Um livro acabado de adicionar está disponível.
-            Disponivel = true
+            Disponivel = true,
+            UtilizadorRequisitado = null
         };
 
-
-        // Adicionar também o livro à lista em memória.
         livros.Add(livroNovo);
 
         // Guardar o livro no ficheiro.
-        GravarLivros();
+        GuardarLivro();
+    }
 
-        Console.WriteLine("\nO livro foi adicionado.");
+    /// <summary>
+    /// Guarda todos os livros no ficheiro livros.txt.
+    ///
+    /// Cada livro é convertido numa linha de texto com os
+    /// seus dados separados pelo carácter '|'.
+    ///
+    /// Também é guardado o número do cartão do utilizador
+    /// que requisitou o livro.
+    /// </summary>
+    private static void GuardarLivro()
+    {
+        // Criar uma lista para armazenar as linhas
+        // que serão escritas no ficheiro.
+        List<string> linhas = new List<string>();
+
+        // Percorrer todos os livros existentes na biblioteca.
+        foreach (Livro livro in livros)
+        {
+            // Por defeito, o livro não tem utilizador associado.
+            string numeroCartaoBiblioteca = "0";
+
+            // Se existir um utilizador associado ao livro,
+            // guardar o número do respetivo cartão.
+            if (livro.UtilizadorRequisitado != null)
+            {
+                numeroCartaoBiblioteca =
+                    livro.UtilizadorRequisitado.NumeroCartaoBiblioteca;
+            }
+
+            // Construir a linha com os dados do livro.
+            // O último campo identifica o utilizador associado.
+            linhas.Add(
+                livro.Título + "|" +
+                livro.Autor + "|" +
+                livro.ISBN + "|" +
+                livro.AnoPublicacao + "|" +
+                livro.Genero + "|" +
+                livro.Disponivel + "|" +
+                numeroCartaoBiblioteca
+            );
+        }
+
+        // Substituir o conteúdo do ficheiro pelas linhas atuais.
+        File.WriteAllLines(ficheiroLivros, linhas);
     }
 
     // ==========================================================
@@ -438,99 +488,176 @@ class Program
         Console.WriteLine("\n====== 4. Requisitar Livro ======\n");
 
         Console.Write("Insira o ISBN do livro a requisitar: ");
-        string isbn = Console.ReadLine() ?? "";
+        string isbn = Console.ReadLine();
 
         Livro livroARequisitar = null;
 
+        // Percorrer todos os livros à procura do ISBN indicado.
         foreach (Livro livro in livros)
         {
-            if (isbn.Equals(livro.ISBN, StringComparison.OrdinalIgnoreCase))
+            // Comparar o ISBN introduzido com o ISBN do livro.
+            if (isbn.Equals(
+            livro.ISBN,
+            StringComparison.OrdinalIgnoreCase))
             {
+                // Só é possível requisitar um livro disponível.
                 if (livro.Disponivel)
                 {
+                    // Guardar a referência ao livro encontrado.
                     livroARequisitar = livro;
+
+                    // Terminar o ciclo porque o livro já foi encontrado.
                     break;
                 }
                 else
                 {
+                    // Impedir uma nova requisição de um livro
+                    // que já se encontra requisitado.
                     Console.WriteLine("O livro não está disponível.");
+
+                    // Terminar o método sem continuar a requisição.
                     return;
                 }
-
             }
+
         }
 
         if (livroARequisitar == null)
         {
             Console.WriteLine("Não existe nenhum livro com o isbn indicado.");
-            return;
         }
 
         Console.Write("Insira o número do cartão do utilizador: ");
-        string numeroCartao = Console.ReadLine() ?? "";
+        string numeroCartao = Console.ReadLine();
 
         Utilizador utilizadorEncontrado = null;
 
+        // Percorrer a lista de utilizadores para encontrar
+        // aquele que corresponde ao número de cartão introduzido.
         foreach (Utilizador utilizador in utilizadores)
         {
-            if (numeroCartao.Equals(utilizador.NumeroCartaoBiblioteca, StringComparison.OrdinalIgnoreCase))
+            if (numeroCartao.Equals(
+            utilizador.NumeroCartaoBiblioteca,
+            StringComparison.OrdinalIgnoreCase))
             {
+                // Verificar quantos livros o utilizador tem requisitados.
                 if (utilizador.LivrosRequisitados.Count < 2)
                 {
+                    // O utilizador existe e ainda pode requisitar livros.
                     utilizadorEncontrado = utilizador;
+
+                    // Terminar o ciclo porque já foi encontrado.
                     break;
                 }
                 else
                 {
-                    Console.WriteLine("O utilizador já atingiu o limite de livros.");
+                    // O limite de dois livros já foi atingido.
+                    Console.WriteLine(
+                        "O utilizador já atingiu o limite de livros.");
+
+                    // Interromper a operação de requisição.
                     return;
                 }
             }
+
         }
 
         if (utilizadorEncontrado == null)
         {
             Console.WriteLine("O utilizador indicado não existe.");
-            return;
         }
 
+        // Alterar o estado do livro para indicar que
+        // deixou de estar disponível.
         livroARequisitar.Disponivel = false;
-        livroARequisitar.Utilizador = utilizadorEncontrado;
+
+        // Associar o livro ao utilizador que o requisitou.
+        livroARequisitar.UtilizadorRequisitado = utilizadorEncontrado;
+
+        // Adicionar o livro à lista de livros requisitados
+        // desse utilizador.
         utilizadorEncontrado.LivrosRequisitados.Add(livroARequisitar);
 
-        Console.WriteLine($"O livro {livroARequisitar.Título} foi requisitado com sucesso por {utilizadorEncontrado.Nome}.");
+        // Guardar as alterações nos dois ficheiros para que
+        // a informação das requisições fique persistente.
+        GuardarLivro();
+        GuardarUtilizador();
+
+        Console.WriteLine($"O livro {livroARequisitar.Título} de {livroARequisitar.Autor} foi requisitado por {utilizadorEncontrado.Nome}, com o nº {utilizadorEncontrado.NumeroCartaoBiblioteca}.");
     }
 
     // ==========================================================
     // ================= 5. DEVOLVER LIVRO =====================
     // ==========================================================
 
+    /// <summary>
+    /// Permite devolver um livro.
+    /// </summary>
     private static void DevolverLivro()
     {
         Console.WriteLine("\n====== 5. Devolver Livro ======\n");
-        Console.Write("Insira o ISBN do livro que deseja devolver: ");
-        string isbnDevolver = Console.ReadLine() ?? "";
 
-        Livro livro = livros.FirstOrDefault(l =>
-            isbnDevolver.Equals(l.ISBN, StringComparison.OrdinalIgnoreCase));
+        Console.Write("\nInsira o ISBN do livro a devolver: ");
+        string isbnRemover = Console.ReadLine();
 
-        if (livro == null)
+        Livro livroEncontrado = null;
+
+        foreach (Livro livro in livros)
         {
-            Console.WriteLine("\nNão existe nenhum livro com o ISBN indicado.");
+            //se o livro existe
+            if(isbnRemover.Equals(livro.ISBN, StringComparison.OrdinalIgnoreCase)){
+                livroEncontrado = livro;
+                //se foi requisitado
+                if(livro.Disponivel == true)
+                {
+                    Console.WriteLine("O livro não está requisitado");
+                    return;
+                }
+                break;
+            }
+        }
+
+        if (livroEncontrado == null)
+        {
+            Console.WriteLine("Não existe nenhum livro com o isbn indicado.");
             return;
         }
 
-        if (livro.Disponivel)
+        //utilizador que tem o livro
+        Utilizador utilizadorComLivro = livroEncontrado.UtilizadorRequisitado;
+
+        Console.Write("\nInsira o número do cartão da biblioteca do utilizador: ");
+        string numeroUtilizador = Console.ReadLine();
+
+        Utilizador utilizadorEncontrado = null;
+
+        foreach(Utilizador utilizador in utilizadores)
         {
-            Console.WriteLine($"\nO livro {livro.Título} já está disponível na biblioteca.");
+            //se o utilizador existe
+            if(numeroUtilizador.Equals(utilizador.NumeroCartaoBiblioteca, StringComparison.OrdinalIgnoreCase))
+            {
+                utilizadorEncontrado = utilizador;
+                //se este é o utilizador que tem o livro
+                if (utilizador.NumeroCartaoBiblioteca != utilizadorComLivro.NumeroCartaoBiblioteca) {
+                    Console.WriteLine("Este utilizador não tem o livro indicado.");
+                    return;
+                }
+                break;
+            }
         }
-        else
+
+        if(utilizadorEncontrado == null)
         {
-            livro.Utilizador?.LivrosRequisitados.Remove(livro);
-            livro.Utilizador = null;
-            livro.Disponivel = true;
-            Console.WriteLine($"\nO livro {livro.Título} foi devolvido com sucesso.");
+            Console.WriteLine("O utilizador com o número de cartão indicado não existe.");
+            return;
         }
+
+        utilizadorEncontrado.LivrosRequisitados.Remove(livroEncontrado);
+        livroEncontrado.Disponivel = true;
+        livroEncontrado.UtilizadorRequisitado = null;
+
+        GuardarLivro();
+        GuardarUtilizador();
     }
 
 
@@ -551,11 +678,35 @@ class Program
             "\nInsira o ISBN do livro que deseja remover: ");
 
         // Ler o ISBN introduzido.
-        string isbnRemover = Console.ReadLine() ?? "";
+        string isbnRemover = Console.ReadLine();
 
         // Variável que irá guardar o livro encontrado.
-        Livro livroEncontrado = livros.FirstOrDefault(l =>
-            isbnRemover.Equals(l.ISBN, StringComparison.OrdinalIgnoreCase));
+        Livro livroEncontrado = null;
+
+        // Índice do livro dentro da lista.
+        int indiceLivro = -1;
+
+
+        // Percorrer a lista através de um ciclo for.
+        for (int i = 0; i < livros.Count; i++)
+        {
+            // Comparar o ISBN introduzido com o ISBN
+            // de cada livro.
+            if (isbnRemover.Equals(
+                livros[i].ISBN,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                // Guardar o livro encontrado.
+                livroEncontrado = livros[i];
+
+                // Guardar a posição do livro na lista.
+                indiceLivro = i;
+
+                // Como já encontramos o livro,
+                // podemos terminar o ciclo.
+                break;
+            }
+        }
 
 
         // Verificar se o livro foi encontrado.
@@ -573,13 +724,36 @@ class Program
                 $"{livroEncontrado.Título}, " +
                 $"de {livroEncontrado.Autor}? (s/n): ");
 
-            if (Confirmar())
+            char resposta = char.Parse(Console.ReadLine());
+
+
+            // Verificar se o utilizador respondeu "s".
+            if (resposta == 's')
             {
                 // Remover o livro da lista.
                 livros.Remove(livroEncontrado);
 
-                // Reescrever o ficheiro a partir da lista.
-                GravarLivros();
+
+                // Ler novamente o conteúdo do ficheiro.
+                string[] linhasLivros =
+                    File.ReadAllLines(ficheiroLivros);
+
+
+                // Criar uma nova lista com as linhas do ficheiro.
+                List<string> novasLinhas =
+                    new List<string>(linhasLivros);
+
+
+                // Remover da lista a linha correspondente
+                // ao livro eliminado.
+                novasLinhas.RemoveAt(indiceLivro);
+
+
+                // Escrever novamente os dados no ficheiro.
+                File.WriteAllLines(
+                    ficheiroLivros,
+                    linhasLivros);
+
 
                 Console.WriteLine(
                     $"\n{livroEncontrado.Título}, " +
@@ -588,40 +762,10 @@ class Program
         }
     }
 
-    // --------------Guardar livros----------------
-    private static void GravarLivros()
-    {
-        File.WriteAllLines(ficheiroLivros, livros.Select(l =>
-            $"{l.Título}|{l.Autor}|{l.ISBN}|{l.AnoPublicacao}|{l.Genero}|{l.Disponivel}"));
-    }
-
-    private static void GuardarLivros()
-    {
-        Console.WriteLine("\n====== Guardar Livros ======\n");
-        GravarLivros();
-        Console.WriteLine("Livros guardados.");
-    }
-
     // --------------------------------------------------------
     // --------------------- Utilizadores ---------------------
     // --------------------------------------------------------
-    // -----------------------Guardar utilizadores----------------
-    private static void GravarUtilizadores()
-    {
-        File.WriteAllLines(ficheiroUtilizadores, utilizadores.Select(u =>
-            $"{u.NumeroCartaoBiblioteca}|{u.Nome}"));
-    }
 
-    private static void GuardarUtilizadores()
-    {
-        Console.WriteLine("\n====== Guardar Utilizadores ======\n");
-        GravarUtilizadores();
-        Console.WriteLine("Utilizadores guardados.");
-    }
-
-    // ==========================================================
-    // ================== CARREGAR UTILIZADORES ================
-    // ==========================================================
     /// <summary>
     /// Carrega os utilizadores existentes no ficheiro
     /// utilizadores.txt.
@@ -635,7 +779,8 @@ class Program
         if (!File.Exists(ficheiroUtilizadores))
         {
             // Criar o ficheiro se este ainda não existir.
-            File.Create(ficheiroUtilizadores).Dispose();
+            using (File.Create(ficheiroUtilizadores)) { }
+            return;
         }
 
         // Ler todas as linhas do ficheiro.
@@ -646,8 +791,6 @@ class Program
         // Percorrer todas as linhas.
         foreach (string linha in linhas)
         {
-            if (string.IsNullOrWhiteSpace(linha)) continue;
-
             // Separar os campos utilizando '|'.
             string[] dados = linha.Split('|');
 
@@ -700,7 +843,8 @@ class Program
             NumeroCartaoBiblioteca =
                 numeroCartaoBiblioteca,
 
-            Nome = nomeUtilizador
+            Nome = nomeUtilizador,
+            LivrosRequisitados = new List<Livro>()
         };
 
 
@@ -709,11 +853,55 @@ class Program
 
 
         // Guardar o utilizador no ficheiro.
-        GravarUtilizadores();
+        GuardarUtilizador();
 
+        Console.WriteLine("\nO utilizador foi adicionado.");
+    }
 
-        Console.WriteLine(
-            "\nO utilizador foi adicionado.");
+    /// <summary>
+    /// Guarda todos os utilizadores no ficheiro utilizadores.txt.
+    ///
+    /// Para cada utilizador, são guardados o número do cartão,
+    /// o nome e os ISBN dos livros requisitados.
+    ///
+    /// O formato permite registar até dois livros por utilizador.
+    /// O valor "0" representa uma posição sem livro associado.
+    /// </summary>
+    private static void GuardarUtilizador()
+    {
+        // Lista que irá conter as linhas do ficheiro.
+        List<string> linhas = new List<string>();
+
+        // Percorrer todos os utilizadores registados.
+        foreach (Utilizador utilizador in utilizadores)
+        {
+            // Por defeito, não existem livros associados
+            // à primeira nem à segunda posição.
+            string isbn1 = "0", isbn2 = "0";
+
+            // Se existir um livro requisitado, guardar o seu ISBN.
+            if (utilizador.LivrosRequisitados.Count == 1)
+            {
+                isbn1 = utilizador.LivrosRequisitados[0].ISBN;
+            }
+            // Se existirem dois livros, guardar os dois ISBN.
+            else if (utilizador.LivrosRequisitados.Count == 2)
+            {
+                isbn1 = utilizador.LivrosRequisitados[0].ISBN;
+                isbn2 = utilizador.LivrosRequisitados[1].ISBN;
+            }
+
+            // Construir a linha com os dados do utilizador.
+            linhas.Add(
+                utilizador.NumeroCartaoBiblioteca + "|" +
+                utilizador.Nome + "|" +
+                isbn1 + "|" +
+                isbn2
+            );
+        }
+
+        // Atualizar o ficheiro com todos os utilizadores.
+        File.WriteAllLines(ficheiroUtilizadores, linhas);
     }
 
     /// <summary>
@@ -723,7 +911,7 @@ class Program
     /// o primeiro número será 000000001.
     /// 
     /// Caso já existam utilizadores, o número será
-    /// incrementado a partir do maior número existente.
+    /// incrementado a partir do último utilizador.
     /// </summary>
     /// 
     /// <returns>
@@ -739,13 +927,21 @@ class Program
         }
         else
         {
-            int maior = utilizadores.Max(u =>
-                int.Parse(u.NumeroCartaoBiblioteca));
+            // Obter o número do último utilizador.
+            string numeroUltimoUtilizador =
+                utilizadores[
+                    utilizadores.Count() - 1
+                ].NumeroCartaoBiblioteca;
 
 
+            // Converter o número para inteiro,
+            // adicionar 1 e voltar a converter para texto.
+            //
             // D9 garante que o número terá sempre
             // 9 algarismos.
-            return (maior + 1).ToString("D9");
+            return (
+                int.Parse(numeroUltimoUtilizador) + 1
+            ).ToString("D9");
         }
     }
 
@@ -771,7 +967,7 @@ class Program
 
 
         // Ler o nome a pesquisar.
-        string pesquisa = Console.ReadLine() ?? "";
+        string pesquisa = Console.ReadLine();
 
 
         // Variável utilizada para saber se foi
@@ -824,6 +1020,34 @@ class Program
             "Número do Cartão da Biblioteca: " +
             utilizador.NumeroCartaoBiblioteca);
 
+        // Se existir exatamente um livro requisitado,
+        // apresentar os seus dados.
+        if (utilizador.LivrosRequisitados.Count == 1)
+        {
+            Console.WriteLine(
+            $"O livro {utilizador.LivrosRequisitados[0].Título} " +
+            $"de {utilizador.LivrosRequisitados[0].Autor} está requisitado.");
+        }
+        // Se existirem dois livros requisitados,
+        // apresentar a informação de ambos.
+        else if (utilizador.LivrosRequisitados.Count == 2)
+        {
+            Console.WriteLine(
+            $"O livro {utilizador.LivrosRequisitados[0].Título} " +
+            $"de {utilizador.LivrosRequisitados[0].Autor} está requisitado.");
+
+            Console.WriteLine(
+            $"O livro {utilizador.LivrosRequisitados[1].Título} " +
+            $"de {utilizador.LivrosRequisitados[1].Autor} está requisitado.");
+
+        }
+        // Se a lista estiver vazia, o utilizador não tem livros requisitados.
+        else
+        {
+            Console.WriteLine(
+            "O utilizador não requisitou qualquer livro.");
+        }
+
         Console.WriteLine("\n========================");
     }
 
@@ -849,14 +1073,40 @@ class Program
 
 
         // Ler o número do cartão.
-        string numeroCartao = Console.ReadLine() ?? "";
+        string numeroCartao = Console.ReadLine();
+
+
+        // Variável que irá guardar o utilizador encontrado.
+        Utilizador utilizadorEncontrado = null;
+
+
+        // Índice do utilizador dentro da lista.
+        int indiceUtilizador = -1;
 
 
         // Procurar o utilizador na lista.
-        Utilizador utilizadorEncontrado = utilizadores.FirstOrDefault(u =>
-            numeroCartao.Equals(
-                u.NumeroCartaoBiblioteca,
-                StringComparison.OrdinalIgnoreCase));
+        for (int i = 0; i < utilizadores.Count; i++)
+        {
+            // Comparar o número introduzido com o número
+            // de cada utilizador.
+            if (numeroCartao.Equals(
+                utilizadores[i].NumeroCartaoBiblioteca,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                // Guardar o utilizador encontrado.
+                utilizadorEncontrado =
+                    utilizadores[i];
+
+
+                // Guardar a posição do utilizador.
+                indiceUtilizador = i;
+
+
+                // Parar o ciclo porque já encontramos
+                // o utilizador.
+                break;
+            }
+        }
 
 
         // Verificar se o utilizador foi encontrado.
@@ -877,14 +1127,39 @@ class Program
                 " ? (s/n): ");
 
 
-            if (Confirmar())
+            char resposta =
+                char.Parse(Console.ReadLine());
+
+
+            // Aceitar tanto 's' como 'S'.
+            if (resposta == 's' || resposta == 'S')
             {
                 // Remover o utilizador da lista.
                 utilizadores.Remove(utilizadorEncontrado);
 
 
+                // Ler todas as linhas do ficheiro.
+                string[] linhasUtilizadores =
+                    File.ReadAllLines(
+                        ficheiroUtilizadores);
+
+
+                // Criar uma nova lista com as linhas.
+                List<string> novasLinhas =
+                    new List<string>(
+                        linhasUtilizadores);
+
+
+                // Remover a linha correspondente
+                // ao utilizador eliminado.
+                novasLinhas.RemoveAt(
+                    indiceUtilizador);
+
+
                 // Atualizar o ficheiro.
-                GravarUtilizadores();
+                File.WriteAllLines(
+                    ficheiroUtilizadores,
+                    novasLinhas);
 
 
                 Console.WriteLine(
