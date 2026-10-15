@@ -24,12 +24,14 @@ namespace Gestor_De_Tarefas
         {
             if (Tarefa.SelectedItem != null)
             {
-                Tarefa.Items.Remove(Tarefa.SelectedItem);
+                int indice= Tarefa.SelectedIndex;   
+                string tarefaCompleta = Tarefa.SelectedItem.ToString() + " ✅";
+                Tarefa.Items[indice] = tarefaCompleta;
             }
         }
         private void ButtonApagar_Click(object sender, EventArgs e)
         {
-            Tarefa.Items.Clear();
+            Tarefa.Items.Remove(Tarefa.SelectedItem);
         }
     }
 }
