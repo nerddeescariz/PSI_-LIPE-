@@ -78,7 +78,7 @@
             // 
             ButtonCompletar.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ButtonCompletar.ForeColor = SystemColors.ActiveCaptionText;
-            ButtonCompletar.Location = new Point(332, 550);
+            ButtonCompletar.Location = new Point(60, 519);
             ButtonCompletar.Name = "ButtonCompletar";
             ButtonCompletar.Size = new Size(134, 34);
             ButtonCompletar.TabIndex = 4;
@@ -90,9 +90,9 @@
             // 
             ButtonApagar.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ButtonApagar.ForeColor = SystemColors.ActiveCaptionText;
-            ButtonApagar.Location = new Point(656, 549);
+            ButtonApagar.Location = new Point(200, 519);
             ButtonApagar.Name = "ButtonApagar";
-            ButtonApagar.Size = new Size(116, 35);
+            ButtonApagar.Size = new Size(124, 34);
             ButtonApagar.TabIndex = 5;
             ButtonApagar.Text = "Apagar";
             ButtonApagar.UseVisualStyleBackColor = true;
@@ -103,7 +103,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Highlight;
-            ClientSize = new Size(1376, 742);
+            ClientSize = new Size(1323, 742);
             Controls.Add(ButtonApagar);
             Controls.Add(ButtonCompletar);
             Controls.Add(Tarefa);
