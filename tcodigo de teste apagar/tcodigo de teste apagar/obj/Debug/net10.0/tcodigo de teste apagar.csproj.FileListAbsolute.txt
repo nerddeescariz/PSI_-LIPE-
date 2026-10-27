@@ -1,5 +1,0 @@
-C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\tcodigo de teste apagar\tcodigo de teste apagar\obj\Debug\net10.0\tcodigo de teste apagar.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\tcodigo de teste apagar\tcodigo de teste apagar\obj\Debug\net10.0\tcodigo de teste apagar.AssemblyInfoInputs.cache
-C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\tcodigo de teste apagar\tcodigo de teste apagar\obj\Debug\net10.0\tcodigo de teste apagar.AssemblyInfo.cs
-C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\tcodigo de teste apagar\tcodigo de teste apagar\obj\Debug\net10.0\tcodigo de teste apagar.csproj.CoreCompileInputs.cache
-C:\Users\Aluno\Documents\GitHub\PSI_-LIPE-\tcodigo de teste apagar\tcodigo de teste apagar\obj\Debug\net10.0\tcodigo de teste apagar.sourcelink.json
